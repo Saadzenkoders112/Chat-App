@@ -1,25 +1,25 @@
 // import type { NextRequest } from "next/server";
-import { NextResponse } from 'next/server';
+import { NextRequest, NextResponse } from 'next/server';
 
-export function middleware() {
-  // const token = req.cookies.get("accessToken")?.value;
+export function middleware(req: NextRequest) {
+  const token = req.cookies.get("accessToken")?.value;
 
-  // const { pathname } = req.nextUrl.clone();
+  const { pathname } = req.nextUrl.clone();
 
   // if (pathname === "/") {
   //   return NextResponse.redirect(new URL("/home", req.url));
   // }
-  // const publicRoutes = ["/login", "/signup"];
+  const publicRoutes = ["/login", "/signup"];
 
-  // const protectedRoutes = ["/"];
+  const protectedRoutes = ["/"];
 
-  // if (token && publicRoutes.includes(pathname)) {
-  //   return NextResponse.redirect(new URL("/", req.url));
-  // }
+  if (token && publicRoutes.includes(pathname)) {
+    return NextResponse.redirect(new URL("/", req.url));
+  }
 
-  // if (!token && protectedRoutes.includes(pathname)) {
-  //   return NextResponse.redirect(new URL("/login", req.url));
-  // }
+  if (!token && protectedRoutes.includes(pathname)) {
+    return NextResponse.redirect(new URL("/login", req.url));
+  }
 
   return NextResponse.next();
 }
