@@ -18,7 +18,7 @@ export function middleware(req: NextRequest) {
   }
 
   if (!token && protectedRoutes.includes(pathname)) {
-    return NextResponse.redirect(new URL("/login", req.url));
+    return NextResponse.redirect(new URL("/auth/login", req.url));
   }
 
   return NextResponse.next();

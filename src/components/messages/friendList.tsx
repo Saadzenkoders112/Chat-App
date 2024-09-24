@@ -1,74 +1,89 @@
 'use client';
 
 import Image from 'next/image';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import ChatSearch from '../search/chatSearch';
 
 import { Dialog, DialogTrigger } from '@/components/ui/dialog';
 import AddFriend from '../modal/addFriend';
+import axios from 'axios';
+import { getCookieFn } from '@/utils/storage.util';
+import { Room } from '@/types/Interfaces/room.interface';
+import {io} from 'socket.io-client'
 
 const FriendList = () => {
+  const [rooms, setRooms] = useState<Room[] | []>([]);
+  const accessToken = getCookieFn('accessToken');
+  const fetchRooms = async () => {
+    try {
+      const res = await axios.get(`${process.env.NEXT_PUBLIC_BASE_URL}/rooms`, {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      });
+      setRooms(res.data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const socket  = io(process.env.NEXT_PUBLIC_BASE_URL, {
+    extraHeaders: {
+      Authorization: `Bearer ${accessToken}`
+    }
+  })
+  useEffect(() => {
+    fetchRooms();
+    socket.on("connet", () => {
+      console.log("Connect")
+    })
+    return () => {
+      socket.off("connect", () => {
+        console.log("Disconnected")
+      })
+    }
+  }, [rooms]);
+
+  const [isOpen, setIsOpen] = useState(false);
+  const closeDialog = () => {
+    setIsOpen(false);
+  };
+
   return (
     <div className='h-full p-4 rounded-lg bg-gray-700 text-white flex flex-col gap-4'>
       <p className='text-xl text-center font-semibold'>All chats</p>
-      <Dialog>
+      <Dialog open={isOpen} onOpenChange={setIsOpen}>
         <DialogTrigger asChild>
           <button className='w-full text-xs p-1 rounded-lg text-center bg-blue-500'>
             Search friends
           </button>
         </DialogTrigger>
-        <AddFriend />
+        <AddFriend closeDialog={closeDialog} />
       </Dialog>
       <ChatSearch />
-      <ul className='text-sm'>
-        <li className='flex gap-2 justify-between items-center p-2 '>
-          <div className='flex gap-2 items-center'>
-            <Image
-              src='/assets/images/usericon.png'
-              alt='user_img'
-              height={20}
-              width={20}
-            />
-            <p>Saad khan</p>
-          </div>
-          <div className='text-xs text-green-500'>active</div>
-        </li>
-        <li className='flex gap-2 justify-between items-center p-2 '>
-          <div className='flex gap-2 items-center'>
-            <Image
-              src='/assets/images/usericon.png'
-              alt='user_img'
-              height={20}
-              width={20}
-            />
-            <p>Saad Khan</p>
-          </div>
-          <div className='text-xs text-red-500'>offline</div>
-        </li>
-        <li className='flex gap-2 justify-between items-center p-2 '>
-          <div className='flex gap-2 items-center'>
-            <Image
-              src='/assets/images/usericon.png'
-              alt='user_img'
-              height={20}
-              width={20}
-            />
-            <p>Saad Khan</p>
-          </div>
-          <div className='text-xs text-green-500'>active</div>
-        </li>
-        <li className='flex gap-2 justify-between items-center p-2 '>
-          <div className='flex gap-2 items-center'>
-            <Image
-              src='/assets/images/usericon.png'
-              alt='user_img'
-              height={20}
-              width={20}
-            />
-            <p>Saad Khan</p>
-          </div>
-          <div className='text-xs text-red-500'>offline</div>
-        </li>
+      <ul className='text-sm overflow-y-auto scrollbar-thin'>
+        {rooms.length === 0 ? (
+          <div>Loading...</div>
+        ) : (
+          rooms?.map((room, index) => (
+            <li
+              key={index}
+              className='flex gap-2 justify-between items-center p-2 cursor-pointer'
+              onClick={() => socket.emit("JOIN_ROOMS", (res: any) => {console.log(res)})}
+            >
+              <div className='flex gap-2 items-center'>
+                <Image
+                  src='/assets/images/usericon.png'
+                  alt='user_img'
+                  height={20}
+                  width={20}
+                />
+                <p>{room.name}</p>
+              </div>
+              <div className='text-xs text-green-500'>active</div>
+            </li>
+          ))
+        )}
       </ul>
     </div>
   );

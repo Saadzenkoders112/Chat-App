@@ -27,6 +27,7 @@
     "axios": "^1.7.7",
     "class-variance-authority": "^0.7.0",
     "cookies-next": "^4.1.0",
+    "debounce": "^2.1.1",
     "eslint": "^8.56.0",
     "eslint-config-prettier": "^9.1.0",
     "eslint-plugin-jsx-a11y": "^6.8.0",
@@ -52,7 +53,8 @@
     "redux-thunk": "^3.1.0",
     "shadcn-ui": "^0.4.1",
     "sharp": "^0.33.1",
-    "socket.io-client": "^4.7.2",
+    "socket.io": "^4.8.0",
+    "socket.io-client": "^4.8.0",
     "tailwind-merge": "^2.2.0",
     "yup": "^1.4.0"
   },

@@ -1,8 +1,14 @@
+'use client'
+
+import { getCookieFn } from '@/utils/storage.util';
 import { SendHorizontal } from 'lucide-react';
 import Image from 'next/image';
-import React from 'react';
+import React, { useEffect } from 'react';
+import { io } from 'socket.io-client';
 
 const ChatSection = () => {
+  const accessToken = getCookieFn('accessToken');
+
   return (
     <div className='flex-1 p-2 flex flex-col justify-between'>
       <div className='flex items-center gap-2 w-full'>

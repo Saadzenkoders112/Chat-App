@@ -4,8 +4,10 @@ import { registerSchema } from '@/schema/registerSchema';
 import { Eye, EyeOff, Mail, User } from 'lucide-react';
 import axios from 'axios';
 import {toast, Bounce, ToastContainer} from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css';
+
 import {
-  initialValues,
+  registerInitialValues,
   RegisterResponse,
 } from '@/types/Interfaces/auth/user.interafce';
 import { setCookieClientSideFn } from '@/utils/storage.util';
@@ -16,7 +18,7 @@ interface IRegistrationViewProps {}
 const RegistrationView: FC<IRegistrationViewProps> = () => {
   const [passEye, setPassEye] = useState<boolean>(false);
   const router = useRouter();
-  const initialValues: initialValues = {
+  const initialValues: registerInitialValues = {
     firstName: '',
     lastName: '',
     password: '',
@@ -154,6 +156,12 @@ const RegistrationView: FC<IRegistrationViewProps> = () => {
             </div>
           </Form>
         </FormikProvider>
+        <p
+          onClick={() => router.push('/auth/login')}
+          className='text-sm text-blue-700 cursor-pointer text-center mt-4'
+        >
+          Already have an account? login
+        </p>
       </div>
     </div>
   );
