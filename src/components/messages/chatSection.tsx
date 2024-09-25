@@ -3,11 +3,25 @@
 import { getCookieFn } from '@/utils/storage.util';
 import { SendHorizontal } from 'lucide-react';
 import Image from 'next/image';
+import { useSearchParams } from 'next/navigation';
 import React, { useEffect } from 'react';
 import { io } from 'socket.io-client';
 
 const ChatSection = () => {
   const accessToken = getCookieFn('accessToken');
+  const searchParams = useSearchParams()
+  const chatId = searchParams.get("id")
+  const socket = io(process.env.NEXT_PUBLIC_BASE_URL, {
+    extraHeaders: {
+      Authorization: `Bearer ${accessToken}`
+    }
+  })
+
+  useEffect(() => {
+    socket.on("RECEIVED_MESSAGE", () => {
+      console.log("Messages recieved")
+    })
+  }, [])
 
   return (
     <div className='flex-1 p-2 flex flex-col justify-between'>

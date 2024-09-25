@@ -1,7 +1,7 @@
 'use client';
 
 import Image from 'next/image';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import ChatSearch from '../search/chatSearch';
 
 import { Dialog, DialogTrigger } from '@/components/ui/dialog';
@@ -9,11 +9,13 @@ import AddFriend from '../modal/addFriend';
 import axios from 'axios';
 import { getCookieFn } from '@/utils/storage.util';
 import { Room } from '@/types/Interfaces/room.interface';
-import {io} from 'socket.io-client'
+import { io } from 'socket.io-client';
+import { useRouter } from 'next/navigation';
 
 const FriendList = () => {
   const [rooms, setRooms] = useState<Room[] | []>([]);
   const accessToken = getCookieFn('accessToken');
+
   const fetchRooms = async () => {
     try {
       const res = await axios.get(`${process.env.NEXT_PUBLIC_BASE_URL}/rooms`, {
@@ -27,21 +29,8 @@ const FriendList = () => {
     }
   };
 
-  const socket  = io(process.env.NEXT_PUBLIC_BASE_URL, {
-    extraHeaders: {
-      Authorization: `Bearer ${accessToken}`
-    }
-  })
   useEffect(() => {
     fetchRooms();
-    socket.on("connet", () => {
-      console.log("Connect")
-    })
-    return () => {
-      socket.off("connect", () => {
-        console.log("Disconnected")
-      })
-    }
   }, [rooms]);
 
   const [isOpen, setIsOpen] = useState(false);
@@ -49,10 +38,30 @@ const FriendList = () => {
     setIsOpen(false);
   };
 
+  const router = useRouter();
+  const handleChat = (id: string) => {
+    const socket = io(process.env.NEXT_PUBLIC_BASE_URL, {
+      extraHeaders: {
+        Authorization: `Bearer ${accessToken}`,
+      },
+    });
+    socket.emit(
+      'JOIN_SINGLE_ROOM',
+      { roomId: id, transports: ['websocket', 'polling'] },
+      (res: any) => {
+        console.log(res);
+        router.push(`?id=${id}`);
+      },
+    );
+  };
+
   return (
     <div className='h-full p-4 rounded-lg bg-gray-700 text-white flex flex-col gap-4'>
       <p className='text-xl text-center font-semibold'>All chats</p>
-      <Dialog open={isOpen} onOpenChange={setIsOpen}>
+      <Dialog
+        open={isOpen}
+        onOpenChange={setIsOpen}
+      >
         <DialogTrigger asChild>
           <button className='w-full text-xs p-1 rounded-lg text-center bg-blue-500'>
             Search friends
@@ -69,7 +78,7 @@ const FriendList = () => {
             <li
               key={index}
               className='flex gap-2 justify-between items-center p-2 cursor-pointer'
-              onClick={() => socket.emit("JOIN_ROOMS", (res: any) => {console.log(res)})}
+              onClick={() => handleChat(room.id)}
             >
               <div className='flex gap-2 items-center'>
                 <Image

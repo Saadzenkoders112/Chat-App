@@ -32,7 +32,7 @@ const SignInView: FC<ISignInViewProps> = () => {
         console.log(res)
         setCookieClientSideFn('accessToken', res.data.accessToken);
         setCookieClientSideFn('currentUser', JSON.stringify(res.data.currentUser));
-        toast.success("User created", {
+        toast.success("Logged in", {
           position: "top-center",
           transition: Bounce
         })
@@ -116,7 +116,7 @@ const SignInView: FC<ISignInViewProps> = () => {
           </Form>
         </FormikProvider>
         <p
-          onClick={() => router.push('/auth/login')}
+          onClick={() => router.push('/auth/signup')}
           className='text-sm text-blue-500 cursor-pointer text-center mt-4'
         >
           Don't have an account? register
