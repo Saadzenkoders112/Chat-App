@@ -6,6 +6,7 @@ import AddFriendSearch from '../search/addFriendSearch';
 import { IoPersonAdd } from 'react-icons/io5';
 import { io } from 'socket.io-client';
 import { Bounce, toast } from 'react-toastify';
+import { socket } from '../../../socketConfig';
 
 interface AddFriendProps {
   closeDialog: () => void;
@@ -22,11 +23,6 @@ const AddFriend: React.FC<AddFriendProps> = ({closeDialog}) => {
   const accessToken = getCookieFn('accessToken');
 
   const handleAddFriend = (id: string,friendName: string) => {
-    let socket = io('https://zenchat-backend-vnhm.onrender.com', {
-      extraHeaders: {
-        Authorization: `Bearer ${accessToken}`,
-      },
-    });
     socket.emit('CREATE_ROOM', {
       type: 'direct',
       participants: [id],

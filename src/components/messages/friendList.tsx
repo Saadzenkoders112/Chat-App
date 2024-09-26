@@ -9,7 +9,6 @@ import AddFriend from '../modal/addFriend';
 import axios from 'axios';
 import { getCookieFn } from '@/utils/storage.util';
 import { Room } from '@/types/Interfaces/room.interface';
-import { io } from 'socket.io-client';
 import { useRouter } from 'next/navigation';
 
 const FriendList = () => {
@@ -31,7 +30,7 @@ const FriendList = () => {
 
   useEffect(() => {
     fetchRooms();
-  }, [rooms]);
+  }, []);
 
   const [isOpen, setIsOpen] = useState(false);
   const closeDialog = () => {
@@ -39,21 +38,6 @@ const FriendList = () => {
   };
 
   const router = useRouter();
-  const handleChat = (id: string) => {
-    const socket = io(process.env.NEXT_PUBLIC_BASE_URL, {
-      extraHeaders: {
-        Authorization: `Bearer ${accessToken}`,
-      },
-    });
-    socket.emit(
-      'JOIN_SINGLE_ROOM',
-      { roomId: id, transports: ['websocket', 'polling'] },
-      (res: any) => {
-        console.log(res);
-        router.push(`?id=${id}`);
-      },
-    );
-  };
 
   return (
     <div className='h-full p-4 rounded-lg bg-gray-700 text-white flex flex-col gap-4'>
@@ -78,7 +62,7 @@ const FriendList = () => {
             <li
               key={index}
               className='flex gap-2 justify-between items-center p-2 cursor-pointer'
-              onClick={() => handleChat(room.id)}
+              onClick={() => router.push(`?id=${room.id}`)}
             >
               <div className='flex gap-2 items-center'>
                 <Image
