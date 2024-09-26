@@ -1,5 +1,5 @@
 export interface SearchResults {
-    firstName: string;
-    lastName: string;
-    id: string
+  firstName: string;
+  lastName: string;
+  id: string;
 }

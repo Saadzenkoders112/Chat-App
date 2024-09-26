@@ -12,30 +12,33 @@ interface AddFriendProps {
   closeDialog: () => void;
 }
 
-const AddFriend: React.FC<AddFriendProps> = ({closeDialog}) => {
+const AddFriend: React.FC<AddFriendProps> = ({ closeDialog }) => {
   const [searchResults, setSearchResults] = useState<SearchResults[] | null>(
     null,
   );
   const currentUser = getCookieFn('currentUser');
-  const currentUserObj = currentUser  && JSON.parse(currentUser)
+  const currentUserObj = currentUser && JSON.parse(currentUser);
   const [searchError, setSearchError] = useState<string>('');
 
   const accessToken = getCookieFn('accessToken');
 
-  const handleAddFriend = (id: string,friendName: string) => {
-    socket.emit('CREATE_ROOM', {
-      type: 'direct',
-      participants: [id],
-      name: `${currentUserObj.firstName} - ${friendName}`
-    }, (res: any) => {
-      toast.success("Friend added!", {
-        position:"top-center",
-        transition: Bounce
-      })
-      closeDialog()
-    })
+  const handleAddFriend = (id: string, friendName: string) => {
+    socket.emit(
+      'CREATE_ROOM',
+      {
+        type: 'direct',
+        participants: [id],
+        name: `${currentUserObj.firstName} - ${friendName}`,
+      },
+      (res: any) => {
+        toast.success('Friend added!', {
+          position: 'top-center',
+          transition: Bounce,
+        });
+        closeDialog();
+      },
+    );
   };
-  
 
   return (
     <DialogContent className='bg-white p-4'>

@@ -6,8 +6,8 @@ export interface registerInitialValues {
 }
 
 export interface loginInitialValues {
-  email: string,
-  password: string
+  email: string;
+  password: string;
 }
 
 export interface RegisterResponse {

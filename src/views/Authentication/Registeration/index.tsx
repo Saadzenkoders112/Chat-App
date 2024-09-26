@@ -3,7 +3,7 @@ import { Field, Form, FormikProvider, FormikValues, useFormik } from 'formik';
 import { registerSchema } from '@/schema/registerSchema';
 import { Eye, EyeOff, Mail, User } from 'lucide-react';
 import axios from 'axios';
-import {toast, Bounce, ToastContainer} from 'react-toastify'
+import { toast, Bounce, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 import {
@@ -33,10 +33,10 @@ const RegistrationView: FC<IRegistrationViewProps> = () => {
       );
       setCookieClientSideFn('accessToken', res.data.accessToken);
       setCookieClientSideFn('currentUser', JSON.stringify(res.data.newUser));
-      toast.success("User created", {
-        position: "top-center",
-        transition: Bounce
-      })
+      toast.success('User created', {
+        position: 'top-center',
+        transition: Bounce,
+      });
       router.push('/');
     } catch (error) {
       throw new Error('Error');

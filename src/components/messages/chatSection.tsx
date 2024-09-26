@@ -59,7 +59,7 @@ const ChatSection = () => {
   }, []);
 
   const handleInput = () => {
-    console.log(inputVal)
+    console.log(inputVal);
     socket.emit(
       'NEW_MESSAGE',
       { roomId: chatId, message: inputVal },
@@ -116,7 +116,7 @@ const ChatSection = () => {
           className='focus:outline-none text-sm bg-gray-600 w-full'
           type='text'
           placeholder='Search people...'
-          onChange={(e) => setInputVal(e.target.value)}
+          onChange={e => setInputVal(e.target.value)}
           onKeyDown={handleKeyDown}
         />
         <SendHorizontal

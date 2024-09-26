@@ -7,11 +7,13 @@ import axios from 'axios';
 import { toast, Bounce, ToastContainer } from 'react-toastify';
 import { setCookieClientSideFn } from '@/utils/storage.util';
 import { useRouter } from 'next/navigation';
-import { loginInitialValues, LoginResponse } from '@/types/Interfaces/auth/user.interafce';
+import {
+  loginInitialValues,
+  LoginResponse,
+} from '@/types/Interfaces/auth/user.interafce';
 import { loginSchema } from '@/schema/login.schema';
 import { Eye, EyeOff, Mail } from 'lucide-react';
 import 'react-toastify/dist/ReactToastify.css';
-
 
 interface ISignInViewProps {}
 
@@ -23,24 +25,27 @@ const SignInView: FC<ISignInViewProps> = () => {
     password: '',
   };
 
-    const handleSubmit = async (values: FormikValues) => {
-      try {
-        const res: LoginResponse = await axios.post(
-          `${process.env.NEXT_PUBLIC_BASE_URL}/auth/login`,
-          values,
-        );
-        console.log(res)
-        setCookieClientSideFn('accessToken', res.data.accessToken);
-        setCookieClientSideFn('currentUser', JSON.stringify(res.data.currentUser));
-        toast.success("Logged in", {
-          position: "top-center",
-          transition: Bounce
-        })
-        router.push('/');
-      } catch (error) {
-        toast.error(error as any)
-      }
-    };
+  const handleSubmit = async (values: FormikValues) => {
+    try {
+      const res: LoginResponse = await axios.post(
+        `${process.env.NEXT_PUBLIC_BASE_URL}/auth/login`,
+        values,
+      );
+      console.log(res);
+      setCookieClientSideFn('accessToken', res.data.accessToken);
+      setCookieClientSideFn(
+        'currentUser',
+        JSON.stringify(res.data.currentUser),
+      );
+      toast.success('Logged in', {
+        position: 'top-center',
+        transition: Bounce,
+      });
+      router.push('/');
+    } catch (error) {
+      toast.error(error as any);
+    }
+  };
 
   const formik = useFormik({
     initialValues: loginInitialValues,

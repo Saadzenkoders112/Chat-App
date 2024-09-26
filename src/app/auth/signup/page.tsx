@@ -1,4 +1,4 @@
-'use client'
+'use client';
 
 import RegistrationView from '@/views/Authentication/Registeration';
 import React from 'react';
