@@ -15,6 +15,7 @@ const ChatSection = () => {
   const accessToken = getCookieFn('accessToken');
   const searchParams = useSearchParams();
   const chatId = searchParams.get('id');
+  const roomName = searchParams.get('roomName')
   const currentUser = getCookieFn('currentUser');
   const currentUserObj = currentUser && JSON.parse(currentUser);
 
@@ -44,7 +45,7 @@ const ChatSection = () => {
     socket.on('connect', () => {
       console.log('Main socket connected');
     });
-    socket.emit('JOIN_SINGLE_ROOM', { type: 'direct', roomId: chatId });
+    socket.emit('JOIN_SINGLE_ROOM', { type: 'direct', roomId: chatId }, (res: object) => console.log(res));
     socket.on('RECEIVED_MESSAGE', res => {
       setMessages(prev => [...prev, res]);
     });
@@ -84,7 +85,7 @@ const ChatSection = () => {
           width={30}
         />
         <div>
-          <p className='text-white text-sm'>Saad khan</p>
+          <p className='text-white text-sm'>{roomName}</p>
           <div className='flex gap-2 items-center'>
             <div className='p-1 rounded-full bg-green-500'></div>
             <p className='text-green-500 text-xs'>active</p>

@@ -62,7 +62,7 @@ const FriendList = () => {
             <li
               key={index}
               className='flex gap-2 justify-between items-center p-2 cursor-pointer'
-              onClick={() => router.push(`?id=${room.id}`)}
+              onClick={() => router.push(`?id=${room.id}&roomName=${room.name}`)}
             >
               <div className='flex gap-2 items-center'>
                 <Image
