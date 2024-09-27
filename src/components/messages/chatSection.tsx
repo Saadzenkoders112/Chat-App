@@ -71,7 +71,6 @@ const ChatSection = () => {
         console.log(res);
       },
     );
-
     setInputVal('');
   };
 
@@ -113,18 +112,18 @@ const ChatSection = () => {
                     key={msg.id}
                   >
                     <div>
-                    <p
-                      className={`${msg.createdBy === currentUserObj.id ? 'bg-blue-500' : 'bg-gray-700'} rounded-lg p-1`}
-                    >
-                      {msg.text}
-                    </p>
-                    <p>
-                      {new Date(msg.createdAt).toLocaleTimeString('en-US', {
-                        hour: '2-digit',
-                        minute: '2-digit',
-                        hour12: false,
-                      })}
-                    </p>
+                      <p
+                        className={`${msg.createdBy === currentUserObj.id ? 'bg-blue-500' : 'bg-gray-700'} rounded-lg p-1`}
+                      >
+                        {msg.text}
+                      </p>
+                      <p>
+                        {new Date(msg.createdAt).toLocaleTimeString('en-US', {
+                          hour: '2-digit',
+                          minute: '2-digit',
+                          hour12: false,
+                        })}
+                      </p>
                     </div>
                   </li>
                 ))}
