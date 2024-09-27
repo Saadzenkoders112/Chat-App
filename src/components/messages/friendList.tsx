@@ -1,7 +1,7 @@
 'use client';
 
 import Image from 'next/image';
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import ChatSearch from '../search/chatSearch';
 
 import { Dialog, DialogTrigger } from '@/components/ui/dialog';
@@ -24,7 +24,7 @@ const FriendList = () => {
       });
       setRooms(res.data);
     } catch (error) {
-      console.log(error);
+      return;
     }
   };
 

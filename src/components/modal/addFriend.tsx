@@ -4,7 +4,6 @@ import { getCookieFn } from '@/utils/storage.util';
 import { SearchResults } from '@/types/Interfaces/search.interface';
 import AddFriendSearch from '../search/addFriendSearch';
 import { IoPersonAdd } from 'react-icons/io5';
-import { io } from 'socket.io-client';
 import { Bounce, toast } from 'react-toastify';
 import { socket } from '../../../socketConfig';
 
@@ -20,8 +19,6 @@ const AddFriend: React.FC<AddFriendProps> = ({ closeDialog }) => {
   const currentUserObj = currentUser && JSON.parse(currentUser);
   const [searchError, setSearchError] = useState<string>('');
 
-  const accessToken = getCookieFn('accessToken');
-
   const handleAddFriend = (id: string, friendName: string) => {
     socket.emit(
       'CREATE_ROOM',
@@ -30,7 +27,7 @@ const AddFriend: React.FC<AddFriendProps> = ({ closeDialog }) => {
         participants: [id],
         name: `${currentUserObj.firstName} - ${friendName}`,
       },
-      (res: any) => {
+      () => {
         toast.success('Friend added!', {
           position: 'top-center',
           transition: Bounce,
@@ -39,7 +36,6 @@ const AddFriend: React.FC<AddFriendProps> = ({ closeDialog }) => {
       },
     );
   };
-
   return (
     <DialogContent className='bg-white p-4'>
       <p className='text-2xl text-center'>Add Friend</p>

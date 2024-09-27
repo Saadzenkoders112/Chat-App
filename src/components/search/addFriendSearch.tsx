@@ -27,7 +27,7 @@ const AddFriendSearch: React.FC<AddFriendSearchProps> = ({
         setSearchResults(res.data);
       }
     } catch (error) {
-      setSearchError(error as any);
+      setSearchError(error as string);
     }
   };
 

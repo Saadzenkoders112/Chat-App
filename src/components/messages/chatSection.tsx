@@ -5,7 +5,6 @@ import { SendHorizontal } from 'lucide-react';
 import Image from 'next/image';
 import { useSearchParams } from 'next/navigation';
 import React, { useEffect, useState } from 'react';
-import { io } from 'socket.io-client';
 import { socket } from '../../../socketConfig';
 import axios from 'axios';
 import { Message } from '@/types/Interfaces/message.interface';
@@ -33,7 +32,7 @@ const ChatSection = () => {
         setMessages(res.data);
       }
     } catch (error) {
-      console.log(error);
+      console.log(error as string);
     }
   };
 
@@ -42,12 +41,11 @@ const ChatSection = () => {
   }, [chatId, messages]);
 
   useEffect(() => {
-    socket.on('connect', () => console.log('Main socket connected'));
-    socket.emit('JOIN_SINGLE_ROOM', { type: 'direct', roomId: chatId }, () =>
-      console.log('Room joined'),
-    );
+    socket.on('connect', () => {
+      console.log('Main socket connected');
+    });
+    socket.emit('JOIN_SINGLE_ROOM', { type: 'direct', roomId: chatId });
     socket.on('RECEIVED_MESSAGE', res => {
-      console.log('Messages recieved');
       setMessages(prev => [...prev, res]);
     });
 
@@ -59,12 +57,11 @@ const ChatSection = () => {
   }, []);
 
   const handleInput = () => {
-    console.log(inputVal);
     socket.emit(
       'NEW_MESSAGE',
       { roomId: chatId, message: inputVal },
       (res: boolean) => {
-        console.log('Message sent');
+        console.log(res);
       },
     );
 

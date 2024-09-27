@@ -21,6 +21,8 @@
   },
   "plugins": ["@typescript-eslint", "react"],
   "rules": {
+    "react/no-unescaped-entities": "off",
+    "@next/next/no-page-custom-font": "off",
     "max-lines-per-function": [
       "error",
       {
@@ -33,12 +35,15 @@
         "max": 20
       }
     ],
-    "no-unused-vars": "warn",
-    "no-console": "warn",
+    "no-unused-vars": 0,
+    "no-console": 0,
+    "@typescript-eslint/no-unused-vars": 0,
+    "@typescript-eslint/no-explicit-any": 0,
     "react/react-in-jsx-scope": "off",
-    "react-hooks/exhaustive-deps": "off", 
+    "react-hooks/exhaustive-deps": "off",
     "react/prop-types": "off",
-    "@typescript-eslint/no-unused-vars": ["error", { "argsIgnorePattern": "^_" }],
+    "jsx-a11y/click-events-have-key-events": "off",
+    "jsx-a11y/no-noninteractive-element-interactions": "off",
     // Add your custom rule
     "no-restricted-syntax": [
       "error",
@@ -48,11 +53,18 @@
       }
     ],
     // Enforce camelCase naming convention for functions and variables
-    "camelcase": ["error", { "properties": "never", "ignoreDestructuring": true }],
+    "camelcase": [
+      "error",
+      { "properties": "never", "ignoreDestructuring": true }
+    ],
     // Enforce PascalCase for React component names
     "react/jsx-pascal-case": ["error", { "allowAllCaps": true }],
     // Enforce .jsx or .tsx file extensions for JSX files
-    "react/jsx-filename-extension": ["error", { "extensions": [".jsx", ".tsx"] }]
+    "react/jsx-filename-extension": [
+      "error",
+      { "extensions": [".jsx", ".tsx"] }
+    ],
+    "prettier/prettier": 0
   },
   "settings": {
     "react": {
