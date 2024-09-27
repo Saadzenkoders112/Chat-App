@@ -7,8 +7,8 @@ import React from 'react';
 interface AddFriendSearchProps {
   setSearchResults: React.Dispatch<
     React.SetStateAction<SearchResults[] | null>
-  >; // Match the type here
-  setSearchError: React.Dispatch<React.SetStateAction<string | ''>>; // Match the type here
+  >; 
+  setSearchError: React.Dispatch<React.SetStateAction<string | ''>>; 
 }
 
 const AddFriendSearch: React.FC<AddFriendSearchProps> = ({
