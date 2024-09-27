@@ -23,7 +23,6 @@ const FriendList = () => {
           Authorization: `Bearer ${accessToken}`,
         },
       });
-      console.log(res)
       if (res) {
         setRooms(res.data);
         setLoading(!loading);
@@ -49,7 +48,7 @@ const FriendList = () => {
   const handleLogout = () => {
     removeCookie('accessToken');
     removeCookie('currentUser');
-    router.push("/auth/login")
+    router.push('/auth/login');
   };
 
   return (

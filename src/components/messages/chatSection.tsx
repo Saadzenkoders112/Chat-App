@@ -82,53 +82,73 @@ const ChatSection = () => {
   };
 
   return (
-    <div className='flex-1 p-2 flex flex-col justify-between h-[95%]'>
-      <div className='flex items-center gap-2 w-full'>
-        <Image
-          src='/assets/images/usericon.png'
-          alt='user_img'
-          height={30}
-          width={30}
-        />
-        <div>
-          <p className='text-white text-sm'>{roomName}</p>
-          <div className='flex gap-2 items-center'>
-            <div className='p-1 rounded-full bg-green-500'></div>
-            <p className='text-green-500 text-xs'>active</p>
+    <>
+      {chatId ? (
+        <div className='flex-1 p-2 flex flex-col justify-between h-[95%]'>
+          <div className='flex items-center gap-2 w-full'>
+            <Image
+              src='/assets/images/usericon.png'
+              alt='user_img'
+              height={30}
+              width={30}
+            />
+            <div>
+              <p className='text-white text-sm'>{roomName}</p>
+              <div className='flex gap-2 items-center'>
+                <div className='p-1 rounded-full bg-green-500'></div>
+                <p className='text-green-500 text-xs'>active</p>
+              </div>
+            </div>
+          </div>
+          {messages?.length === 0 ? (
+            <div className='w-full h-full flex justify-center items-center text-2xl text-white font-semibold'>
+              <p>Start a chat...</p>
+            </div>
+          ) : (
+            <div className='flex-grow p-2 overflow-y-auto'>
+              <ul className='p-1'>
+                {messages?.map(msg => (
+                  <li
+                    className={`w-full mb-2 text-white p-1 flex ${msg.createdBy === currentUserObj.id ? 'justify-end' : ''}`}
+                    key={msg.id}
+                  >
+                    <p
+                      className={`${msg.createdBy === currentUserObj.id ? 'bg-blue-500' : 'bg-gray-700'} rounded-lg p-1`}
+                    >
+                      {msg.text}
+                    </p>
+                    <p>
+                      {new Date(msg.createdAt).toLocaleTimeString('en-US', {
+                        hour: '2-digit',
+                        minute: '2-digit',
+                        hour12: false,
+                      })}
+                    </p>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
+          <div className='flex gap-2 items-center p-2 rounded-lg bg-gray-600 text-gray-100 w-full'>
+            <input
+              className='focus:outline-none text-sm bg-gray-600 w-full'
+              type='text'
+              placeholder='Search people...'
+              onChange={e => setInputVal(e.target.value)}
+              onKeyDown={handleKeyDown}
+            />
+            <SendHorizontal
+              onClick={handleInput}
+              className='h-4 w-4 cursor-pointer'
+            />
           </div>
         </div>
-      </div>
-      <div className='flex-grow p-2 overflow-y-auto'>
-        <ul className='p-1'>
-          {messages?.map(msg => (
-            <li
-              className={`w-full mb-2 text-white p-1 flex ${msg.createdBy === currentUserObj.id ? 'justify-end' : ''}`}
-              key={msg.id}
-            >
-              <p
-                className={`${msg.createdBy === currentUserObj.id ? 'bg-blue-500' : 'bg-gray-700'} rounded-lg p-1`}
-              >
-                {msg.text}
-              </p>
-              <p></p>
-            </li>
-          ))}
-        </ul>
-      </div>
-      <div className='flex gap-2 items-center p-2 rounded-lg bg-gray-600 text-gray-100 w-full'>
-        <input
-          className='focus:outline-none text-sm bg-gray-600 w-full'
-          type='text'
-          placeholder='Search people...'
-          onChange={e => setInputVal(e.target.value)}
-          onKeyDown={handleKeyDown}
-        />
-        <SendHorizontal
-          onClick={handleInput}
-          className='h-4 w-4 cursor-pointer'
-        />
-      </div>
-    </div>
+      ) : (
+        <div className='w-full h-full flex justify-center items-center text-2xl text-white font-semibold'>
+          <p>Chat App</p>
+        </div>
+      )}
+    </>
   );
 };
 
