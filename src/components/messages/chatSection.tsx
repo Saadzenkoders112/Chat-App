@@ -112,6 +112,7 @@ const ChatSection = () => {
                     className={`w-full mb-2 text-white p-1 flex ${msg.createdBy === currentUserObj.id ? 'justify-end' : ''}`}
                     key={msg.id}
                   >
+                    <div>
                     <p
                       className={`${msg.createdBy === currentUserObj.id ? 'bg-blue-500' : 'bg-gray-700'} rounded-lg p-1`}
                     >
@@ -124,6 +125,7 @@ const ChatSection = () => {
                         hour12: false,
                       })}
                     </p>
+                    </div>
                   </li>
                 ))}
               </ul>
