@@ -24,14 +24,22 @@ export interface RegisterResponse {
 
 export interface LoginResponse {
   data: {
-    accessToken: string;
-    currentUser: {
+    message: string
+    token: string;
+    user: {
       id: string;
-      firstName: string;
-      lastName: string;
+      first_name: string;
+      last_name: string;
       email: string;
+      password: string,
+      resetToken?: string,
+      resetTokenExpiration?: string
     };
   };
 }
 
-// export
+export interface resetPassValues {
+  email: string
+  newPassword: string;
+  resetToken: string;
+}

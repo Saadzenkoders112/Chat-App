@@ -2,7 +2,7 @@ import '@/styles/globals.css';
 
 import type { Metadata } from 'next';
 import { Providers } from '@/providers';
-import { ToastContainer } from 'react-toastify';
+import { Bounce, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 export const metadata: Metadata = {
@@ -18,7 +18,7 @@ export default function RootLayout({
   return (
     <html lang='en'>
       <body className='w-screen h-screen bg-gray-800'>
-        <ToastContainer />
+        <ToastContainer position='top-center' transition={Bounce} />
         <Providers>{children}</Providers>
       </body>
     </html>

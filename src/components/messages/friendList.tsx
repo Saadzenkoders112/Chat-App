@@ -52,7 +52,7 @@ const FriendList = () => {
   };
 
   return (
-    <div className='h-full p-4 rounded-lg bg-gray-700 text-white flex flex-col gap-4'>
+    <div className='h-full p-4 rounded-lg bg-gray-700 text-white flex flex-col gap-4 w-[300px]'>
       <div className='flex justify-between items-center p-1'>
         <p className='text-xl text-center font-semibold'>All chats</p>
         <button
@@ -73,7 +73,6 @@ const FriendList = () => {
         </DialogTrigger>
         <AddFriend closeDialog={closeDialog} />
       </Dialog>
-      {/* <ChatSearch /> */}
       <ul className='text-sm overflow-y-auto scrollbar-thin'>
         {loading ? (
           <div>Loading...</div>

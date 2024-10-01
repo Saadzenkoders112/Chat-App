@@ -10,7 +10,6 @@ export async function POST(req: NextRequest) {
   await initializeDatabase();
   try {
     const user = await AppDataSource.getRepository(User).findOneBy({ email });
-    console.log(user);
     if (!user) {
       return NextResponse.json(
         { message: 'User does not exist!' },
@@ -44,7 +43,7 @@ export async function POST(req: NextRequest) {
       html: `<p>Click the link below to reset your password:</p><a href="${resetLink}">${resetLink}</a>`,
     });
     return NextResponse.json({
-      message: 'Password reset link sent to your gmail',
+      message: `Password reset link sent to ${email}`,
     });
   } catch (error) {
     console.log(error);

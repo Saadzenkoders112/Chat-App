@@ -9,7 +9,7 @@ export async function POST(req: NextRequest) {
   await initializeDatabase();
   try {
     const user = await AppDataSource.getRepository(User).findOneBy({ email });
-    console.log(user)
+    console.log(user);
     if (!user) {
       const hashedPassword = await bcrypt.hash(password, 10);
       const newUser = new User();
