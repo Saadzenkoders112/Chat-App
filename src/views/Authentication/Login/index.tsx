@@ -15,6 +15,7 @@ import { loginSchema } from '@/schema/login.schema';
 import { Eye, EyeOff, Mail } from 'lucide-react';
 import 'react-toastify/dist/ReactToastify.css';
 import { ClipLoader } from 'react-spinners';
+import Link from 'next/link';
 
 interface ISignInViewProps {}
 
@@ -108,6 +109,7 @@ const SignInView: FC<ISignInViewProps> = () => {
               {formik.errors.password && (
                 <p className='text-xs text-red-500'>{formik.errors.password}</p>
               )}
+              <Link className='text-xs text-blue-500' href='/reset-password'>Forgot password</Link>
             </div>
             <div>
               <button

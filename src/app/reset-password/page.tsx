@@ -1,7 +1,13 @@
 'use client';
 
 import React, { useState } from 'react';
-import { FormikProvider, FormikValues, useFormik, Form, useFormikContext } from 'formik';
+import {
+  FormikProvider,
+  FormikValues,
+  useFormik,
+  Form,
+  useFormikContext,
+} from 'formik';
 import { resetPassEmailSchema, resetPassSchema } from '@/schema/registerSchema';
 import { resetPassValues } from '@/types/Interfaces/auth/user.interafce';
 import { useRouter, useSearchParams } from 'next/navigation';
@@ -11,7 +17,7 @@ import { ClipLoader } from 'react-spinners';
 import Email from '@/components/resetPasswordForm/email';
 import ResetPass from '@/components/resetPasswordForm/resetPass';
 const ResetPassword = () => {
-  const [isLoading, setLoading] = useState<boolean>(false)
+  const [isLoading, setLoading] = useState<boolean>(false);
   const searchParams = useSearchParams();
   const resetToken = searchParams.get('token') || '';
   const router = useRouter();
@@ -50,18 +56,17 @@ const ResetPassword = () => {
   });
 
   const handleSendEmail = async () => {
-    setLoading(true)
+    setLoading(true);
     try {
       const res = await axios.post(
         `${process.env.NEXT_PUBLIC_BASE_URL}/api/auth/forgot-password`,
         { email: formik.values.email },
       );
       if (res) {
-        setLoading(false)
+        setLoading(false);
       }
-      formik.resetForm()
+      formik.resetForm();
       toast.success(res.data.message);
-      
     } catch (error) {
       console.log(error);
       toast.error(error as any);

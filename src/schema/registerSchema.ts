@@ -18,11 +18,12 @@ export const registerSchema = yup.object().shape({
 });
 
 export const resetPassEmailSchema = yup.object().shape({
-  email: yup.string().email().required("Email is required")
-})
+  email: yup.string().email().required('Email is required'),
+});
 
 export const resetPassSchema = yup.object().shape({
-  newPassword: yup.string()
+  newPassword: yup
+    .string()
     .required('Password is required')
     .min(8, 'Password must be at least 8 characters long')
     .matches(/[A-Z]/, 'Password must contain at least one uppercase letter')
@@ -32,4 +33,4 @@ export const resetPassSchema = yup.object().shape({
       /[@$!%*?&#]/,
       'Password must contain at least one special character',
     ),
-})
+});

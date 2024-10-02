@@ -37,31 +37,31 @@ const ChatSection = () => {
     }
   };
 
-  useEffect(() => {
-    if (chatId) {
-      fetchMessages();
-    }
-  }, [chatId, messages]);
+  // useEffect(() => {
+  //   if (chatId) {
+  //     fetchMessages();
+  //   }
+  // }, [chatId, messages]);
 
-  useEffect(() => {
-    socket.on('connect', () => {
-      console.log('Main socket connected');
-    });
-    socket.emit(
-      'JOIN_SINGLE_ROOM',
-      { type: 'direct', roomId: chatId },
-      (res: object) => console.log(res),
-    );
-    socket.on('RECEIVED_MESSAGE', res => {
-      setMessages(prev => [...prev, res]);
-    });
+  // useEffect(() => {
+  //   socket.on('connect', () => {
+  //     console.log('Main socket connected');
+  //   });
+  //   socket.emit(
+  //     'JOIN_SINGLE_ROOM',
+  //     { type: 'direct', roomId: chatId },
+  //     (res: object) => console.log(res),
+  //   );
+  //   socket.on('RECEIVED_MESSAGE', res => {
+  //     setMessages(prev => [...prev, res]);
+  //   });
 
-    return () => {
-      socket.off('connect');
-      socket.off('JOIN_SINGLE_ROOM');
-      socket.off('RECEIVED_MESSAGE');
-    };
-  }, []);
+  //   return () => {
+  //     socket.off('connect');
+  //     socket.off('JOIN_SINGLE_ROOM');
+  //     socket.off('RECEIVED_MESSAGE');
+  //   };
+  // }, []);
 
   const handleInput = () => {
     socket.emit(

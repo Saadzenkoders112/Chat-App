@@ -12,6 +12,7 @@ import {
 } from '@/types/Interfaces/auth/user.interafce';
 import { setCookieClientSideFn } from '@/utils/storage.util';
 import { useRouter } from 'next/navigation';
+import { ClipLoader } from 'react-spinners';
 
 interface IRegistrationViewProps {}
 
@@ -28,16 +29,11 @@ const RegistrationView: FC<IRegistrationViewProps> = () => {
   const handleSubmit = async (values: FormikValues) => {
     try {
       const res: RegisterResponse = await axios.post(
-        `${process.env.NEXT_PUBLIC_BASE_URL}/auth/register`,
+        `${process.env.NEXT_PUBLIC_BASE_URL}/api/auth/register`,
         values,
       );
-      setCookieClientSideFn('accessToken', res.data.accessToken);
-      setCookieClientSideFn('currentUser', JSON.stringify(res.data.newUser));
-      toast.success('User created', {
-        position: 'top-center',
-        transition: Bounce,
-      });
-      router.push('/');
+      toast.success(res.data.message);
+      router.push('/auth/login');
     } catch (error) {
       throw new Error('Error');
     }
@@ -50,7 +46,6 @@ const RegistrationView: FC<IRegistrationViewProps> = () => {
 
   return (
     <div className='flex items-center justify-center w-screen h-screen'>
-      <ToastContainer />
       <div className='p-4 lg:w-1/3 md:w-3/5 w-4/5 h-max rounded-lg shadow-2xl bg-white'>
         <p className='text-2xl text-center'>Register</p>
         <FormikProvider value={formik}>
@@ -149,9 +144,17 @@ const RegistrationView: FC<IRegistrationViewProps> = () => {
             <div>
               <button
                 type='submit'
+                disabled={formik.isSubmitting}
                 className='p-1 w-full text-center bg-gray-700 text-white rounded-lg hover:bg-gray-600 duration-200'
               >
-                Submit
+                {formik.isSubmitting ? (
+                  <ClipLoader
+                    size={15}
+                    color='white'
+                  />
+                ) : (
+                  'Submit'
+                )}
               </button>
             </div>
           </Form>
