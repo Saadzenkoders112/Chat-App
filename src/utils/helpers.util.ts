@@ -1,3 +1,6 @@
+import { ITokenPayLoad } from '@/types/Interfaces/tokenPayload.interface';
+import jwt from 'jsonwebtoken';
+
 /**
  * General utility functions.
  */
@@ -79,4 +82,16 @@ export const replaceAll = (
     throw new Error('required parameters not provided');
 
   return str.replace(new RegExp(search, 'g'), replacement);
+};
+
+export const getTokenData = async (token: string): Promise<ITokenPayLoad> => {
+  console.log('inside getTokenData');
+  try {
+    const data = await jwt.verify(token, `${'88ed65043e925bf333c898d9abfdeb6bcc95ada070c2f7504e9fe5282a9a5889'}`);
+
+    return data as ITokenPayLoad;
+  } catch (error) {
+    console.log(error);
+    return {} as ITokenPayLoad;
+  }
 };

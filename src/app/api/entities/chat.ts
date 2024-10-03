@@ -1,7 +1,5 @@
 import 'reflect-metadata';
-import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
-import { User } from './user';
-import { Room } from './room';
+import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity()
 export class Chat {
@@ -11,12 +9,12 @@ export class Chat {
   @Column()
   message!: string;
 
-  @ManyToOne(() => User, user => user.chats)
-  user!: User;
+  @Column()
+  userId!: number
 
   @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
   sentAt!: Date;
 
-  @ManyToOne(() => Room, room => room.chats)
-  room!: Room;
+  @Column()
+  roomId!: number
 }

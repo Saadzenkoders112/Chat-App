@@ -2,12 +2,8 @@ import 'reflect-metadata';
 import {
   Column,
   Entity,
-  ManyToMany,
-  OneToMany,
   PrimaryGeneratedColumn,
 } from 'typeorm';
-import { User } from './user';
-import { Chat } from './chat';
 
 @Entity()
 export class Room {
@@ -17,9 +13,9 @@ export class Room {
   @Column()
   name!: string;
 
-  @OneToMany(() => Chat, chat => chat.room)
-  chats!: Chat[];
+  @Column()
+  createdBy!: number
 
-  @ManyToMany(() => User, user => user.rooms)
-  users!: User[];
+  @Column()
+  participant!: number
 }

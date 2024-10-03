@@ -4,11 +4,7 @@ import {
   Entity,
   PrimaryGeneratedColumn,
   Column,
-  OneToMany,
-  ManyToMany,
 } from 'typeorm';
-import { Room } from './room';
-import { Chat } from './chat';
 
 @Entity()
 export class User {
@@ -26,12 +22,6 @@ export class User {
 
   @Column()
   password!: string;
-
-  @OneToMany(() => Chat, chat => chat.user)
-  chats!: Chat[];
-
-  @ManyToMany(() => Room, room => room.users)
-  rooms!: Room[];
 
   @Column({ nullable: true }) // Token field
   resetToken!: string;

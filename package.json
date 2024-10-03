@@ -13,7 +13,8 @@
     "start": "next start NODE_OPTIONS='-r next-logger'",
     "lint": "next lint",
     "format": "prettier --write \"src/**/*.ts\" \"src/**/*.tsx\"",
-    "prepare": "husky"
+    "prepare": "husky",
+    "server": "ts-node server.ts"
   },
   "dependencies": {
     "@radix-ui/react-dialog": "^1.1.1",
