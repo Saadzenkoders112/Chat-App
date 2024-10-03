@@ -4,7 +4,6 @@ import type { Metadata } from 'next';
 import { Providers } from '@/providers';
 import { Bounce, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import { SocketProvider } from '@/providers/socket-provider';
 
 export const metadata: Metadata = {
   title: 'Create Next App',
@@ -25,7 +24,7 @@ export default function RootLayout({
           pauseOnHover={false}
           autoClose={2000}
         />
-          <Providers>{children}</Providers>
+        <Providers>{children}</Providers>
       </body>
     </html>
   );

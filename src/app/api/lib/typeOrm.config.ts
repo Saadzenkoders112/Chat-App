@@ -1,7 +1,7 @@
 import 'reflect-metadata';
-import { Chat } from '@/app/api/entities/chat';
-import { Room } from '@/app/api/entities/room';
-import { User } from '@/app/api/entities/user';
+import { Chat } from '../entities/chat';
+import { Room } from '../entities/room';
+import { User } from '../entities/user';
 import { DataSource } from 'typeorm';
 
 export const AppDataSource = new DataSource({

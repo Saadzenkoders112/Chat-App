@@ -109,7 +109,12 @@ const SignInView: FC<ISignInViewProps> = () => {
               {formik.errors.password && (
                 <p className='text-xs text-red-500'>{formik.errors.password}</p>
               )}
-              <Link className='text-xs text-blue-500' href='/reset-password'>Forgot password</Link>
+              <Link
+                className='text-xs text-blue-500'
+                href='/reset-password'
+              >
+                Forgot password
+              </Link>
             </div>
             <div>
               <button
