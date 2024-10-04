@@ -1,9 +1,5 @@
 import 'reflect-metadata';
-import {
-  Column,
-  Entity,
-  PrimaryGeneratedColumn,
-} from 'typeorm';
+import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity()
 export class Room {
@@ -14,8 +10,8 @@ export class Room {
   name!: string;
 
   @Column()
-  createdBy!: number
+  createdBy!: number;
 
   @Column()
-  participant!: number
+  participant!: number;
 }

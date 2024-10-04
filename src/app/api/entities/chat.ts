@@ -10,11 +10,11 @@ export class Chat {
   message!: string;
 
   @Column()
-  userId!: number
+  senderId!: number;
 
   @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
   sentAt!: Date;
 
   @Column()
-  roomId!: number
+  roomId!: number;
 }

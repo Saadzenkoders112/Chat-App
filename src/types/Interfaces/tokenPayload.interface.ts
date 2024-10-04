@@ -1,4 +1,4 @@
 export interface ITokenPayLoad {
-    id: number,
-    email: string
+  id: number;
+  email: string;
 }
