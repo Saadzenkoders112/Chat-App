@@ -2,19 +2,21 @@ import { NextRequest, NextResponse } from 'next/server';
 import { User } from '../../entities/user';
 import { AppDataSource } from '../../lib/typeOrm.config';
 import { getTokenData } from '@/utils/helpers.util';
-import { Not } from 'typeorm';
-import { Room } from '../../entities/room';
 import { initializeDatabase } from '../../lib/db';
 import { Friend } from '../../entities/friend';
+import { headers } from 'next/headers';
 
 interface GetUserReq {
   friendId: number;
 }
 
-export async function GET(req: any) {
+export async function GET(req: NextRequest) {
+  const { searchParams } = new URL(req.url);
+  const searchTerm = searchParams.get('searchTerm') || '';
   try {
     await initializeDatabase();
-    const token = req.headers.get('Authorization')?.split(' ')[1];
+    const headerList = headers();
+    const token = headerList.get('Authorization')?.split(' ')[1];
     if (!token) {
       return NextResponse.json(
         { message: 'Token must be provided' },
@@ -25,16 +27,14 @@ export async function GET(req: any) {
     if (!tokenData) {
       return NextResponse.json({ message: 'Invalid token!' }, { status: 401 });
     }
-    const userId = tokenData.id; // Get user ID from token data
+    const userId = tokenData.id;
 
-    // Fetch all users
     const allUsers = await AppDataSource.getRepository(User).find();
 
-    // Fetch all friends of the user
     const friends = await AppDataSource.getRepository(Friend).find({
       where: [{ userId: userId }, { friendId: userId }],
     });
-    
+
     const friendIds = new Set<number>();
     friends.forEach(friend => {
       friendIds.add(friend.friendId);
@@ -45,7 +45,18 @@ export async function GET(req: any) {
       user => !friendIds.has(user.id) && user.id !== userId,
     );
 
-    return NextResponse.json({ users: nonFriendUsers });
+    const searchTermList = searchTerm.split(' ');
+    const regex = searchTermList.map(word => new RegExp(word, "i"));
+
+    const searchedUsers = nonFriendUsers.filter(
+      friend =>
+        regex.some(regex => regex.test(friend.first_name)) || 
+        regex.some(regex => regex.test(friend.last_name)),
+    );
+
+    console.log(searchedUsers)
+
+    return NextResponse.json({ users: searchedUsers });
   } catch (error) {
     return NextResponse.json({ message: 'Error fetching users!' });
   }

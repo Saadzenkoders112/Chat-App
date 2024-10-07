@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { DialogContent } from '../ui/dialog';
 import { getCookieFn } from '@/utils/storage.util';
 import { SearchResults } from '@/types/Interfaces/search.interface';
@@ -20,22 +20,27 @@ const AddFriend: React.FC<AddFriendProps> = ({ closeDialog }) => {
   const [searchError, setSearchError] = useState<string>('');
 
   const handleAddFriend = (id: string, friendName: string) => {
-    socket.emit(
-      'CREATE_ROOM',
-      {
-        type: 'direct',
-        participants: [id],
-        name: `${currentUserObj.firstName} - ${friendName}`,
-      },
-      () => {
-        toast.success('Friend added!', {
-          position: 'top-center',
-          transition: Bounce,
-        });
-        closeDialog();
-      },
-    );
+    socket.emit('create_room', {
+      userId: currentUserObj?.id,
+      friendId: id,
+      roomName: `${currentUserObj.first_name} - ${friendName}`,
+    });
+
+    socket.on('room_created', res => {
+      console.log(res);
+      toast.success('Friend added!', {
+        position: 'top-center',
+        transition: Bounce,
+      });
+      closeDialog();
+    });
   };
+
+  useEffect(() => {
+    return () => {
+      socket.off('room_created');
+    };
+  }, []);
   return (
     <DialogContent className='bg-white p-4'>
       <p className='text-2xl text-center'>Add Friend</p>
@@ -53,10 +58,10 @@ const AddFriend: React.FC<AddFriendProps> = ({ closeDialog }) => {
               key={index}
             >
               <p>
-                {user.firstName} {user.lastName}
+                {user.first_name} {user.last_name}
               </p>
               <IoPersonAdd
-                onClick={() => handleAddFriend(user.id, user.firstName)}
+                onClick={() => handleAddFriend(user.id, user.first_name)}
                 className='h-4 w-4 cursor-pointer z-20 text-slate-600'
               />
             </li>

@@ -2,7 +2,6 @@
 
 import Image from 'next/image';
 import React, { useEffect, useState } from 'react';
-import ChatSearch from '../search/chatSearch';
 
 import { Dialog, DialogTrigger } from '@/components/ui/dialog';
 import AddFriend from '../modal/addFriend';
@@ -18,13 +17,13 @@ const FriendList = () => {
 
   const fetchRooms = async () => {
     try {
-      const res = await axios.get(`${process.env.NEXT_PUBLIC_BASE_URL}/rooms`, {
+      const res = await axios.get(`${process.env.NEXT_PUBLIC_BASE_URL}/api/room/getRooms`, {
         headers: {
           Authorization: `Bearer ${accessToken}`,
         },
       });
       if (res) {
-        setRooms(res.data);
+        setRooms(res.data.rooms);
         setLoading(!loading);
       } else {
         setLoading(!loading);

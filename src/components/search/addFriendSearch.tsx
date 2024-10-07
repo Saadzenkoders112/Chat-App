@@ -21,10 +21,10 @@ const AddFriendSearch: React.FC<AddFriendSearchProps> = ({
     try {
       if (input !== '') {
         const res = await axios.get(
-          `${process.env.NEXT_PUBLIC_BASE_URL}/users/search/${input}`,
+          `${process.env.NEXT_PUBLIC_BASE_URL}/api/user/getUsers?searchTerm=${input}`,
           { headers: { Authorization: `Bearer ${accessToken}` } },
         );
-        setSearchResults(res.data);
+        setSearchResults(res.data.users);
       }
     } catch (error) {
       setSearchError(error as string);

@@ -22,7 +22,7 @@ const ChatSection = () => {
   const fetchMessages = async () => {
     try {
       const res = await axios.get(
-        `${process.env.NEXT_PUBLIC_BASE_URL}/messages/room/${chatId}`,
+        `${process.env.NEXT_PUBLIC_BASE_URL}/api/chat/getChats?roomId=${chatId}`,
         {
           headers: {
             Authorization: `Bearer ${accessToken}`,
@@ -30,45 +30,50 @@ const ChatSection = () => {
         },
       );
       if (res.data) {
-        setMessages(res.data);
+        setMessages(res.data.messages);
       }
     } catch (error) {
       console.log(error as string);
     }
   };
 
-  // useEffect(() => {
-  //   if (chatId) {
-  //     fetchMessages();
-  //   }
-  // }, [chatId, messages]);
+  useEffect(() => {
+    if (chatId) {
+      fetchMessages();
+    }
+  }, [chatId]);
 
-  // useEffect(() => {
-  //   socket.on('connect', () => {
-  //     console.log('Main socket connected');
-  //   });
-  //   socket.emit(
-  //     'JOIN_SINGLE_ROOM',
-  //     { type: 'direct', roomId: chatId },
-  //     (res: object) => console.log(res),
-  //   );
-  //   socket.on('RECEIVED_MESSAGE', res => {
-  //     setMessages(prev => [...prev, res]);
-  //   });
+  useEffect(() => {
+    if (chatId) {
+      socket.emit(
+        'join_room',
+        { roomId: chatId, userId: currentUserObj.id },
+      );
+    }
 
-  //   return () => {
-  //     socket.off('connect');
-  //     socket.off('JOIN_SINGLE_ROOM');
-  //     socket.off('RECEIVED_MESSAGE');
-  //   };
-  // }, []);
+    socket.on('new_message', res => {
+      console.log(res);
+      setMessages(prev => [...prev, res]);
+    });
+
+    socket.on('room_joined', (res: string) => {
+      console.log(res);
+    });
+
+    return () => {
+      socket.off('connect');
+      socket.off('join_room');
+      socket.off('room_joined')
+      socket.off('new_message');
+    };
+  }, [chatId, messages]);
 
   const handleInput = () => {
     socket.emit(
-      'NEW_MESSAGE',
-      { roomId: chatId, message: inputVal },
-      (res: boolean) => {
-        console.log(res);
+      'sendMessage',
+      { roomId: chatId, userId: currentUserObj.id, message: inputVal },
+      () => {
+        console.log('Message sent');
       },
     );
     setInputVal('');
@@ -106,22 +111,22 @@ const ChatSection = () => {
           ) : (
             <div className='flex-grow p-2 overflow-y-auto'>
               <ul className='p-1'>
-                {messages?.map(msg => (
+                {messages?.map((msg, index) => (
                   <li
-                    className={`w-full mb-2 text-white p-1 flex ${msg.createdBy === currentUserObj.id ? 'justify-end' : ''}`}
-                    key={msg.id}
+                    className={`w-full mb-2 text-white p-1 flex ${msg.senderId === currentUserObj?.id ? 'justify-end' : ''}`}
+                    key={index}
                   >
                     <div>
                       <p
-                        className={`${msg.createdBy === currentUserObj.id ? 'bg-blue-500' : 'bg-gray-700'} rounded-lg p-1`}
+                        className={`${msg.senderId === currentUserObj?.id ? 'bg-blue-500' : 'bg-gray-700'} rounded-lg p-1`}
                       >
-                        {msg.text}
+                        {msg.message}
                       </p>
-                      <p>
-                        {new Date(msg.createdAt).toLocaleTimeString('en-US', {
+                      <p className='text-xs'>
+                        {new Date(msg.sentAt).toLocaleTimeString('en-US', {
                           hour: '2-digit',
                           minute: '2-digit',
-                          hour12: false,
+                          hour12: true,
                         })}
                       </p>
                     </div>
@@ -135,6 +140,7 @@ const ChatSection = () => {
               className='focus:outline-none text-sm bg-gray-600 w-full'
               type='text'
               placeholder='Search people...'
+              value={inputVal}
               onChange={e => setInputVal(e.target.value)}
               onKeyDown={handleKeyDown}
             />

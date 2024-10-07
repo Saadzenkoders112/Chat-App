@@ -84,17 +84,19 @@ export const replaceAll = (
   return str.replace(new RegExp(search, 'g'), replacement);
 };
 
-export const getTokenData = async (token: string): Promise<ITokenPayLoad | null>  => {
-  console.log('inside getTokenData');
+export const getTokenData = async (
+  token: string,
+): Promise<ITokenPayLoad | null> => {
+  console.log(token);
   try {
-    const data = await jwt.verify(
+    const data = jwt.verify(
       token,
-      `${'88ed65043e925bf333c898d9abfdeb6bcc95ada070c2f7504e9fe5282a9a5889'}`,
+      '88ed65043e925bf333c898d9abfdeb6bcc95ada070c2f7504e9fe5282a9a5889',
     );
 
     return data as ITokenPayLoad;
   } catch (error) {
     console.log(error);
-    return null
+    return null;
   }
 };

@@ -1,13 +1,13 @@
-import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity()
 export class Friend {
-    @PrimaryGeneratedColumn()
-    id!: number
-    
-    @Column()
-    userId!: number
+  @PrimaryGeneratedColumn()
+  id!: number;
 
-    @Column()
-    friendId!: number
+  @Column()
+  userId!: number;
+
+  @Column()
+  friendId!: number;
 }
