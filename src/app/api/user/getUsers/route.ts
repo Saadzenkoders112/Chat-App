@@ -46,15 +46,15 @@ export async function GET(req: NextRequest) {
     );
 
     const searchTermList = searchTerm.split(' ');
-    const regex = searchTermList.map(word => new RegExp(word, "i"));
+    const regex = searchTermList.map(word => new RegExp(word, 'i'));
 
     const searchedUsers = nonFriendUsers.filter(
       friend =>
-        regex.some(regex => regex.test(friend.first_name)) || 
+        regex.some(regex => regex.test(friend.first_name)) ||
         regex.some(regex => regex.test(friend.last_name)),
     );
 
-    console.log(searchedUsers)
+    console.log(searchedUsers);
 
     return NextResponse.json({ users: searchedUsers });
   } catch (error) {

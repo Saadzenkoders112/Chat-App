@@ -8,7 +8,7 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
-    "dev": "next dev",
+    "dev": "concurrently \"next dev\" \"npm run server\"",
     "build": "next build",
     "start": "next start NODE_OPTIONS='-r next-logger'",
     "lint": "next lint",

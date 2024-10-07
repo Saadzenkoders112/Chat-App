@@ -3,5 +3,5 @@ export interface Message {
   message: string;
   senderId: number;
   id: number;
-  sentAt: string
+  sentAt: string;
 }

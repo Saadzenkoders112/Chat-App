@@ -45,10 +45,7 @@ const ChatSection = () => {
 
   useEffect(() => {
     if (chatId) {
-      socket.emit(
-        'join_room',
-        { roomId: chatId, userId: currentUserObj.id },
-      );
+      socket.emit('join_room', { roomId: chatId, userId: currentUserObj.id });
     }
 
     socket.on('new_message', res => {
@@ -63,7 +60,7 @@ const ChatSection = () => {
     return () => {
       socket.off('connect');
       socket.off('join_room');
-      socket.off('room_joined')
+      socket.off('room_joined');
       socket.off('new_message');
     };
   }, [chatId, messages]);

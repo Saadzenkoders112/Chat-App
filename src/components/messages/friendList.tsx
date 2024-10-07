@@ -17,11 +17,14 @@ const FriendList = () => {
 
   const fetchRooms = async () => {
     try {
-      const res = await axios.get(`${process.env.NEXT_PUBLIC_BASE_URL}/api/room/getRooms`, {
-        headers: {
-          Authorization: `Bearer ${accessToken}`,
+      const res = await axios.get(
+        `${process.env.NEXT_PUBLIC_BASE_URL}/api/room/getRooms`,
+        {
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
         },
-      });
+      );
       if (res) {
         setRooms(res.data.rooms);
         setLoading(!loading);

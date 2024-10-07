@@ -18,7 +18,8 @@
     "typeRoots": ["./types", "./node_modules/@types"],
     "baseUrl": "./src",
     "paths": {
-      "@/*": ["*"]
+      "@/*": ["*"],
+      "react-native-sqlite-storage": ["./empty-module.js"]
     },
     "plugins": [
       {
